@@ -1,9 +1,12 @@
-﻿<!-- Add a simpler button:
+﻿@inject IJSRuntime js;
+<!-- Add a simpler button:
   Simple button that will open the modal.
 -->
-<div data-netlify-identity-button>Login with Netlify Identity</div>
-<div data-netlify-identity-menu></div>
-<div data-netlify-identity-button>Sign up / Log in</div>
+<div data-netlify-identity-button>Log in</div>
 @code {
 
+    protected async override Task OnParametersSetAsync()
+    {
+        await js.InvokeAsync<IJSObjectReference>("import", "./js/netlify-identity-widget.js");
+    }
 }
