@@ -19,10 +19,6 @@
 @{
     async Task OnNavigateAsync(NavigationContext args)
     {
-        if (args.Path.Contains("invite_token"))
-        {
-            Navigation.NavigateTo("/login", false);
-        }
         // await js.InvokeAsync<IJSObjectReference>("import", "./js/netlify-identity-widget.js");
     }
 }
