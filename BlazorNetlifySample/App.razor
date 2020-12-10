@@ -1,5 +1,7 @@
 @inject IJSRuntime js;
-@inject NavigationManager Navigation
+@inject NavigationManager Navigation;
+@inject IAuthService AuthService;
+
 <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="@OnNavigateAsync">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData"
@@ -19,6 +21,10 @@
 @{
     async Task OnNavigateAsync(NavigationContext args)
     {
+        if (args.Path.StartsWith("#invite_token"))
+        {
+            Navigation.NavigateTo("/login/" + args.Path, false);
+        }
         // await js.InvokeAsync<IJSObjectReference>("import", "./js/netlify-identity-widget.js");
     }
 }

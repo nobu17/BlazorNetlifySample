@@ -1,0 +1,14 @@
+﻿@page "/logout"
+
+@code {
+    [Inject]
+    protected NavigationManager Navigation { get; set; }
+    [Inject]
+    protected IAuthService AuthService { get; set; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        await AuthService.LogoutAsync();
+        Navigation.NavigateTo("/login", false);
+    }
+}

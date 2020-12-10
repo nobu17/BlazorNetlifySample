@@ -2,8 +2,57 @@
 
 <h3>Login</h3>
 
-<LoginWidget></LoginWidget>
+<EditForm Model="@LoginInput" OnValidSubmit="@SubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="@LoginInput.UserID" />
+    <br>
+    <InputText type="password" @bind-Value="@LoginInput.Password" />
+    <br>
+    <button type="submit" disabled="@IsLoading">Submit</button>
+</EditForm>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <p>@ErrorMessage</p>
+}
 
 @code {
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+    [Inject]
+    protected IAuthService AuthService { get; set; }
 
+    public LoginData LoginInput { get; set; } = new LoginData();
+    public string ErrorMessage { get; set; }
+    public bool IsLoading { get; set; } = false;
+
+    public async Task SubmitAsync()
+    {
+        ErrorMessage = string.Empty;
+        IsLoading = true;
+        var model = new LoginModel() { UserID = LoginInput.UserID, Password = LoginInput.Password };
+        var result = await AuthService.LoginAsync(model);
+        if (result.IsSuccessful)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = "ログインに失敗しました。";
+        }
+        IsLoading = false;
+    }
+
+    public class LoginData
+    {
+        [Required(ErrorMessage = "ユーザIDを入力してください。")]
+        [StringLength(32, ErrorMessage = "ユーザIDが長すぎます。")]
+        public string UserID { get; set; }
+
+        [Required(ErrorMessage = "パスワードを入力してください。")]
+        [StringLength(32, ErrorMessage = "パスワードが長すぎます。")]
+        public string Password { get; set; }
+    }
 }

@@ -25,7 +25,7 @@ namespace BlazorNetlifySample
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, SpaAuthticateProvider>();
-
+            builder.Services.AddScoped<IAuthService, NetlifyAuthService>();
             await builder.Build().RunAsync();
         }
     }

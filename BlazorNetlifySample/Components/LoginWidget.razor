@@ -7,6 +7,9 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        await js.InvokeAsync<IJSObjectReference>("import", "./js/netlify-identity-widget.js");
+        //await js.InvokeVoidAsync("netlifyIdentity,open");
+        //await js.InvokeAsync<IJSObjectReference>("import", "./js/netlify-identity-widget.js");
+        var moduke = await js.InvokeAsync<IJSObjectReference>("import", "./js/netlifyIdentity.js");
+        //await moduke.InvokeVoidAsync("openDialog");
     }
 }
